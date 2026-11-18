@@ -1,84 +1,123 @@
-<!DOCTYPE html>
-<html lang="id" style="background-color:#0A0A0C;color-scheme:dark">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fuad — Home</title>
-    <style>html,body{background-color:#0A0A0C}</style>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-</head>
-<body>
-    <header>
-        <a href="/" class="logo"><span>F</span>uad</a>
-        <nav>
-            <a href="/" class="active">Home</a>
-            <a href="/about">About</a>
-            <a href="/skills">Skills</a>
-            <a href="/projects">Projects</a>
-            <a href="/blog">Blog</a>
-            <a href="/contact">Contact</a>
-        </nav>
-    </header>
+{% extends 'base.html' %}
+{% from '_icons.html' import icon %}
+{% from '_kartu.html' import kartu_pengalaman, kartu_sertifikat, modal_sertifikat %}
+{% block title %}Beranda{% endblock %}
+{% block content %}
 
-    <main>
-        <section class="hero">
-            <div class="hero-image">
-                <img src="{{ url_for('static', filename='images/fotopp.jpeg') }}" alt="Fuad">
-            </div>
-            <div class="hero-text">
-                <p class="tagline">Mahasiswa Informatika</p>
-                <h2>Halo, saya <span class="highlight">Fuad</span>.<br>
-                    <span class="typewriter">Saya bikin web.</span></h2>
-                <p>Saya tertarik dengan pengembangan website, basis data. Saya percaya teknologi bisa jadi alat buat bikin hidup banyak orang lebih gampang.</p>
-            </div>
-        </section>
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="hero-badge"><i></i>"Mau kenalan? Hayuuuw!!"</span>
+      <h1>Halo, saya <em>{{ profile.nama }}</em>.</h1>
+      <p class="lead">Saya mahasiswa Informatika yang tertarik pada pengembangan website dan basis data. Saya juga mempunyai pengalaman dalam bidang pelayanan atau service hospitality.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="{{ url_for('projects') }}">Lihat Pengalaman {{ icon('arrow') }}</a>
+        <a class="btn btn-ghost" href="{{ url_for('contact') }}">{{ icon('mail') }} Hubungi Saya</a>
+      </div>
+      <div class="hero-meta">
+        <span>{{ icon('cap') }}Informatika, UNU Yogyakarta</span>
+        <span>{{ icon('code') }}Web · MySQL · Service</span>
+      </div>
+    </div>
+    <div class="hero-photo">
+      <div class="frame"><img src="{{ url_for('static', filename=profile.foto) }}" alt="Foto {{ profile.nama }}"></div>
+      <div class="float-chip c1">{{ icon('cap') }}<div>Mahasiswa<small>Informatika</small></div></div>
+      <div class="float-chip c2">{{ icon('code') }}<div>Web Developer<small>Stay a life</small></div></div>
+    </div>
+  </div>
+</section>
 
-        <section class="section">
-            <h3 class="section-title">Mata Kuliah</h3>
-            <div class="card-grid stagger">
-                <div class="card-3d">
-                    <h4><span>01</span> Pemrograman Web</h4>
-                    <p>Belajar membangun aplikasi web dari frontend sampai backend menggunakan teknologi modern.</p>
-                </div>
-                <div class="card-3d">
-                    <h4><span>02</span> Basis Data</h4>
-                    <p>Memahami konsep perancangan, implementasi, dan optimasi database relasional.</p>
-                </div>
-                <div class="card-3d">
-                    <h4><span>03</span> Desaign UI/UX</h4>
-                    <p>Mempelajari desaign serta pengalaman user dalam proses pembuatan aplikasi .</p>
-                </div>
-            </div>
-        </section>
+<!-- TENTANG & KETERTARIKAN -->
+<section class="section-alt section">
+  <div class="wrap about-strip">
+    <div class="reveal">
+      <span class="eyebrow">Tentang Saya</span>
+      <h2>Rasa penasaran yang diubah menjadi karya.</h2>
+      <p style="margin-top:18px">Perjalanan saya dimulai dari pertanyaan sederhana: bagaimana sebuah website bekerja, dari tombol yang diklik sampai data yang tersimpan di server? Latar belakang Rekayasa Perangkat Lunak di SMK membawa saya melanjutkan ke Informatika.</p>
+      <a class="link-arrow" href="{{ url_for('about') }}">Selengkapnya tentang saya {{ icon('arrow') }}</a>
+    </div>
+    <div class="interest-list">
+      <div class="interest reveal"><div class="icon-tile">{{ icon('monitor') }}</div><div><h4>Pengembangan Web</h4><p>HTML, CSS, JavaScript, dan Python Flask untuk membangun aplikasi web.</p></div></div>
+      <div class="interest reveal"><div class="icon-tile warm">{{ icon('db') }}</div><div><h4>Basis Data</h4><p>Merancang dan mengelola data relasional dengan MySQL.</p></div></div>
+      <div class="interest reveal"><div class="icon-tile">{{ icon('palette') }}</div><div><h4>Desain Antarmuka</h4><p>Menyusun tampilan yang rapi dan pengalaman pengguna yang nyaman.</p></div></div>
+    </div>
+  </div>
+</section>
 
-        <section class="section stagger">
-            <h3 class="section-title">Statistik Cepat</h3>
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-icon"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/></svg></div>
-                    <div class="number">3</div><div class="label">Semester</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></div>
-                    <div class="number">12+</div><div class="label">Proyek</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M8 9l-4 3 4 3M16 9l4 3-4 3M13 5l-2 14"/></svg></div>
-                    <div class="number">4</div><div class="label">Bahasa</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
-                    <div class="number">∞</div><div class="label">Rasa Ingin Tahu</div>
-                </div>
-            </div>
-        </section>
-    </main>
+<!-- HIGHLIGHT PENGALAMAN -->
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <div><span class="eyebrow">Pengalaman</span><h2>Sorotan pengalaman kerja &amp; organisasi</h2><p>Pengalaman terbaru yang saya jalani, dikelola langsung dari dashboard admin.</p></div>
+      <a class="link-arrow" href="{{ url_for('projects') }}">Semua pengalaman {{ icon('arrow') }}</a>
+    </div>
+    {% if pengalaman %}
+    <div class="exp-grid">{% for p in pengalaman %}{{ kartu_pengalaman(p) }}{% endfor %}</div>
+    {% else %}
+    <div class="empty">{{ icon('briefcase') }}<h3>Belum ada pengalaman</h3><p>Pengalaman akan tampil di sini setelah ditambahkan.</p></div>
+    {% endif %}
+  </div>
+</section>
 
-    <footer>
-        &copy; 2026 Fuad
-    </footer>
-</body>
-</html>
+<!-- KEAHLIAN UTAMA -->
+<section class="section-alt section">
+  <div class="wrap">
+    <div class="section-head">
+      <div><span class="eyebrow">Keahlian Utama</span><h2>Yang saya kerjakan sehari-hari</h2></div>
+      <a class="link-arrow" href="{{ url_for('skills') }}">Lihat semua keahlian {{ icon('arrow') }}</a>
+    </div>
+    <div class="grid-3">
+      <div class="card reveal"><div class="icon-tile">{{ icon('layout') }}</div><h3>Front-end</h3><p>Menyusun halaman responsif dengan HTML5, CSS3, dan JavaScript.</p></div>
+      <div class="card reveal"><div class="icon-tile warm">{{ icon('code') }}</div><h3>Back-end Python</h3><p>Membangun routing, autentikasi, dan logika aplikasi dengan Flask.</p></div>
+      <div class="card reveal"><div class="icon-tile">{{ icon('db') }}</div><h3>Basis Data</h3><p>Merancang tabel dan menulis query SQL pada MySQL.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- PENDIDIKAN -->
+<section class="section">
+  <div class="wrap">
+    <div class="section-head"><div><span class="eyebrow">Pendidikan</span><h2>Latar belakang akademik</h2></div></div>
+    <div class="grid-2">
+      <div class="card edu-card reveal">
+        <img src="{{ url_for('static', filename='images/unu.png') }}" alt="Logo UNU Yogyakarta">
+        <div><span class="badge">2025 — Sekarang</span><h3 style="margin-top:8px">Informatika</h3><p>{{ profile.kampus }} · Fakultas Teknologi Informasi</p></div>
+      </div>
+      <div class="card edu-card reveal">
+        <img src="{{ url_for('static', filename='images/Logo.png') }}" alt="Logo UNU Yogyakarta">
+        <div><span class="badge k-Pekerjaan">Lulus 2025</span><h3 style="margin-top:8px">Rekayasa Perangkat Lunak</h3><p>SMK Negeri 1 Pangandaran</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PENCAPAIAN -->
+<section class="section-alt section">
+  <div class="wrap">
+    <div class="section-head">
+      <div><span class="eyebrow">Pencapaian &amp; Sertifikasi</span><h2>Sertifikat terbaru</h2></div>
+      <a class="link-arrow" href="{{ url_for('blog') }}">Lihat galeri sertifikat {{ icon('arrow') }}</a>
+    </div>
+    {% if sertifikat %}
+    <div class="cert-grid">{% for s in sertifikat %}{{ kartu_sertifikat(s) }}{% endfor %}</div>
+    {{ modal_sertifikat() }}
+    {% else %}
+    <div class="empty">{{ icon('award') }}<h3>Belum ada sertifikat</h3><p>Sertifikat dan pencapaian akan tampil di sini setelah ditambahkan.</p></div>
+    {% endif %}
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section tight">
+  <div class="wrap">
+    <div class="cta-band reveal">
+      <div><h2>Punya ide atau kesempatan kolaborasi?</h2><p>Kirim pesan melalui formulir kontak. Saya senang berdiskusi dan belajar hal baru.</p></div>
+      <div class="cta-actions">
+        <a class="btn btn-light" href="{{ url_for('contact') }}">{{ icon('mail') }} Kirim Pesan</a>
+        <a class="btn btn-ghost" href="{{ url_for('projects') }}">Lihat Pengalaman</a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,51 @@
+{# Komponen kartu pengalaman & sertifikat yang dipakai ulang di beberapa halaman #}
+{% from '_icons.html' import icon %}
+{% set KAT_ICON = {'Pekerjaan':'briefcase','Magang':'building','Organisasi':'users','Kegiatan':'sparkle','Akademik':'cap'} %}
+{% macro kartu_pengalaman(p) %}
+<article class="exp-card reveal">
+    <a class="exp-media" href="{{ url_for('detail_pengalaman_publik', id_pengalaman=p.id_pengalaman) }}" aria-label="{{ p.judul }}">
+        {% if p.gambar %}<img src="{{ url_for('static', filename='uploads/pengalaman/' ~ p.gambar) }}" alt="Dokumentasi {{ p.judul }}" loading="lazy">
+        {% else %}{{ icon(KAT_ICON.get(p.kategori, 'sparkle')) }}{% endif %}
+        <span class="badge k-{{ p.kategori }}">{{ p.kategori }}</span>
+    </a>
+    <div class="exp-body">
+        <div class="exp-period">{{ icon('calendar') }}{{ p.tanggal_mulai|periode(p.tanggal_selesai) }}</div>
+        <h3>{{ p.judul }}</h3>
+        <div class="exp-role">{{ icon('building') }}<span>{{ p.posisi }} · {{ p.instansi }}</span></div>
+        <p class="desc">{{ p.deskripsi }}</p>
+        <a class="link-arrow" href="{{ url_for('detail_pengalaman_publik', id_pengalaman=p.id_pengalaman) }}">Baca selengkapnya {{ icon('arrow') }}</a>
+    </div>
+</article>
+{% endmacro %}
+{% macro kartu_sertifikat(s) %}
+<button type="button" class="cert reveal"
+    data-cert data-nama="{{ s.nama_sertifikat }}" data-org="{{ s.penyelenggara }}"
+    data-tgl="{{ s.tanggal|tgl_lengkap }}" data-desc="{{ s.deskripsi }}"
+    data-img="{{ url_for('static', filename='uploads/sertifikat/' ~ s.gambar) if s.gambar else '' }}">
+    <div class="cert-img">
+        {% if s.gambar %}<img src="{{ url_for('static', filename='uploads/sertifikat/' ~ s.gambar) }}" alt="Sertifikat {{ s.nama_sertifikat }}" loading="lazy">
+        {% else %}{{ icon('award') }}{% endif %}
+        <span class="cert-zoom">{{ icon('zoom') }}</span>
+    </div>
+    <div class="cert-body">
+        <div class="date">{{ icon('calendar') }}{{ s.tanggal|tgl_lengkap }}</div>
+        <h3>{{ s.nama_sertifikat }}</h3>
+        <div class="org">{{ s.penyelenggara }}</div>
+    </div>
+</button>
+{% endmacro %}
+{% macro modal_sertifikat() %}
+<div class="modal" id="cert-modal" role="dialog" aria-modal="true" aria-label="Pratinjau sertifikat">
+    <div class="modal-box">
+        <button type="button" class="modal-close" aria-label="Tutup">{{ icon('x') }}</button>
+        <div class="modal-img"><img src="" alt=""><div class="ph" style="display:none;color:#fff;font-size:4rem">{{ icon('award') }}</div></div>
+        <div class="modal-info">
+            <span class="badge">Sertifikat &amp; Pencapaian</span>
+            <h3 data-f="nama"></h3>
+            <p><b data-f="org"></b></p>
+            <p style="color:var(--muted);font-size:.88rem;margin-bottom:14px" data-f="tgl"></p>
+            <p data-f="desc"></p>
+        </div>
+    </div>
+</div>
+{% endmacro %}

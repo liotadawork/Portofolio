@@ -1,0 +1,19 @@
+{% from '_icons.html' import icon %}
+{% if errors %}<ul class="errors">{% for e in errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+<form method="post" enctype="multipart/form-data" class="panel"><div class="panel-body">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <div class="form-grid">
+    <div class="field full"><label for="nama_sertifikat">Nama Sertifikat / Pencapaian</label><input id="nama_sertifikat" name="nama_sertifikat" required maxlength="150" value="{{ f.get('nama_sertifikat','') }}"></div>
+    <div class="field"><label for="penyelenggara">Penyelenggara</label><input id="penyelenggara" name="penyelenggara" required maxlength="150" value="{{ f.get('penyelenggara','') }}"></div>
+    <div class="field"><label for="tanggal">Tanggal Diperoleh</label><input id="tanggal" name="tanggal" type="date" required value="{{ f.get('tanggal','') }}"></div>
+    <div class="field full"><label for="deskripsi">Deskripsi Singkat</label><textarea id="deskripsi" name="deskripsi" required style="min-height:110px">{{ f.get('deskripsi','') }}</textarea></div>
+    <div class="field full"><label for="gambar">Gambar Sertifikat</label>
+      <input id="gambar" name="gambar" type="file" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" data-preview="prev">
+      <small>{{ 'Pilih file baru untuk mengganti gambar. ' if gambar_lama }}Format JPG, JPEG, PNG, atau WEBP · maksimal 2 MB.</small>
+      {% if gambar_lama %}<img class="preview" id="prev" src="{{ url_for('static', filename='uploads/sertifikat/' ~ gambar_lama) }}" alt="Gambar saat ini">
+      <label class="check"><input type="checkbox" name="hapus_gambar" value="1"> Hapus gambar saat ini</label>
+      {% else %}<img class="preview" id="prev" style="display:none" alt="Pratinjau">{% endif %}
+    </div>
+  </div>
+  <div class="form-actions"><button class="btn" type="submit">{{ icon('check') }}{{ tombol }}</button><a class="btn light" href="{{ url_for('admin_sertifikat') }}">Batal</a></div>
+</div></form>

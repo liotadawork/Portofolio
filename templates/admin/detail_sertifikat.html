@@ -1,0 +1,13 @@
+{% extends 'admin/base.html' %}
+{% from '_icons.html' import icon %}
+{% block title %}Detail Sertifikat{% endblock %}
+{% block heading %}Detail Sertifikat{% endblock %}
+{% block sub %}{{ s.nama_sertifikat }}{% endblock %}
+{% block topaction %}<a class="btn light" href="{{ url_for('admin_sertifikat') }}">← Kembali</a> <a class="btn" href="{{ url_for('admin_edit_sertifikat', id_=s.id_sertifikat) }}">{{ icon('edit') }}Edit</a>{% endblock %}
+{% block content %}
+<div class="panel"><div class="panel-body">
+  {% if s.gambar %}<img class="cert-preview" src="{{ url_for('static', filename='uploads/sertifikat/' ~ s.gambar) }}" alt="Sertifikat">{% endif %}
+  <div class="msg-meta"><div><small>Nama</small>{{ s.nama_sertifikat }}</div><div><small>Penyelenggara</small>{{ s.penyelenggara }}</div><div><small>Tanggal diperoleh</small>{{ s.tanggal|tgl_lengkap }}</div><div><small>Ditambahkan</small>{{ s.created_at|tgl_waktu }}</div></div>
+  <div class="msg-body">{{ s.deskripsi }}</div>
+</div></div>
+{% endblock %}

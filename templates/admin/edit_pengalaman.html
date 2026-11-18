@@ -1,0 +1,5 @@
+{% extends 'admin/base.html' %}
+{% block title %}Edit Pengalaman{% endblock %}
+{% block heading %}Edit Pengalaman{% endblock %}
+{% block sub %}Ubah data pengalaman atau ganti gambarnya.{% endblock %}
+{% block content %}{% with gambar_lama=p.gambar, tombol='Simpan Perubahan' %}{% include 'admin/_form_pengalaman.html' %}{% endwith %}{% endblock %}

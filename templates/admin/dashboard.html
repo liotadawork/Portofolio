@@ -1,0 +1,33 @@
+{% extends 'admin/base.html' %}
+{% from '_icons.html' import icon %}
+{% block title %}Dashboard{% endblock %}
+{% block heading %}Halo, {{ session.admin_username }} 👋{% endblock %}
+{% block sub %}Ringkasan isi website portofolio Anda.{% endblock %}
+{% block content %}
+<div class="stats">
+  <a class="stat" href="{{ url_for('admin_pengalaman') }}"><div class="ic">{{ icon('briefcase') }}</div><div><b>{{ stat.pengalaman }}</b><span>Total Pengalaman</span></div></a>
+  <a class="stat s2" href="{{ url_for('admin_sertifikat') }}"><div class="ic">{{ icon('award') }}</div><div><b>{{ stat.sertifikat }}</b><span>Total Sertifikat</span></div></a>
+  <a class="stat s3" href="{{ url_for('admin_pesan') }}"><div class="ic">{{ icon('inbox') }}</div><div><b>{{ stat.pesan }}</b><span>Total Pesan</span></div></a>
+  <a class="stat s4" href="{{ url_for('admin_pesan', status='Belum Dibaca') }}"><div class="ic">{{ icon('mail') }}</div><div><b>{{ stat.belum }}</b><span>Pesan Belum Dibaca</span></div></a>
+</div>
+<div class="two-col">
+  <div class="panel">
+    <div class="panel-head"><h2>Pesan terbaru</h2><a class="btn light sm" href="{{ url_for('admin_pesan') }}">Lihat semua</a></div>
+    {% if pesan %}<div class="table-wrap"><table>
+      <tbody>{% for m in pesan %}
+        <tr class="{{ 'unread' if m.status == 'Belum Dibaca' }}">
+          <td>{% if m.status == 'Belum Dibaca' %}<span class="dot"></span>{% endif %}<a href="{{ url_for('admin_detail_pesan', id_=m.id_pesan) }}">{{ m.subjek }}</a><div class="muted">{{ m.nama }} · {{ m.created_at|tgl_waktu }}</div></td>
+          <td style="text-align:right"><span class="badge {{ 'new' if m.status == 'Belum Dibaca' else 'read' }}">{{ m.status }}</span></td>
+        </tr>{% endfor %}
+      </tbody></table></div>
+    {% else %}<div class="empty">{{ icon('inbox') }}<p>Belum ada pesan masuk.</p></div>{% endif %}
+  </div>
+  <div class="panel">
+    <div class="panel-head"><h2>Pengalaman terbaru</h2><a class="btn sm" href="{{ url_for('admin_tambah_pengalaman') }}">{{ icon('plus') }}Tambah</a></div>
+    {% if pengalaman %}<div class="table-wrap"><table><tbody>{% for p in pengalaman %}
+      <tr><td><a href="{{ url_for('admin_edit_pengalaman', id_=p.id_pengalaman) }}"><b>{{ p.judul }}</b></a><div class="muted">{{ p.posisi }} · {{ p.instansi }}</div></td><td style="text-align:right"><span class="badge">{{ p.kategori }}</span></td></tr>
+    {% endfor %}</tbody></table></div>
+    {% else %}<div class="empty">{{ icon('briefcase') }}<p>Belum ada pengalaman.</p></div>{% endif %}
+  </div>
+</div>
+{% endblock %}

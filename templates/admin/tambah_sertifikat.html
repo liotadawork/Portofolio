@@ -1,0 +1,5 @@
+{% extends 'admin/base.html' %}
+{% block title %}Tambah Sertifikat{% endblock %}
+{% block heading %}Tambah Sertifikat{% endblock %}
+{% block sub %}Isi data sertifikat dan unggah gambarnya.{% endblock %}
+{% block content %}{% with gambar_lama=None, tombol='Simpan Sertifikat' %}{% include 'admin/_form_sertifikat.html' %}{% endwith %}{% endblock %}

@@ -1,68 +1,64 @@
-<!DOCTYPE html>
-<html lang="id" style="background-color:#0A0A0C;color-scheme:dark">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fuad — About</title>
-    <style>html,body{background-color:#0A0A0C}</style>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-</head>
-<body>
-    <header>
-        <a href="/" class="logo"><span>F</span>uad</a>
-        <nav>
-            <a href="/">Home</a>
-            <a href="/about" class="active">About</a>
-            <a href="/skills">Skills</a>
-            <a href="/projects">Projects</a>
-            <a href="/blog">Blog</a>
-            <a href="/contact">Contact</a>
-        </nav>
-    </header>
+{% extends 'base.html' %}
+{% from '_icons.html' import icon %}
+{% block title %}Tentang Saya{% endblock %}
+{% block content %}
+<section class="page-hero wrap">
+  <span class="eyebrow">Tentang Saya</span>
+  <h1>Mengenal {{ profile.nama }}</h1>
+  <p>Mahasiswa Informatika yang gemar belajar membangun hal-hal di web, dari tampilan sampai data di balik layar. Juga tertarik pada service hospitality.</p>
+</section>
 
-    <main>
-        <section class="section">
-            <h3 class="section-title">Tentang Saya</h3>
-            <div class="about-content">
-                <p>Saya adalah <span class="highlight">mahasiswa Informatika</span> yang tertarik dengan pengembangan web. Perjalanan saya dimulai dari rasa penasaran terhadap bagaimana sebuah website bekerja &mdash; dari tombol yang diklik sampai data yang tersimpan di server.</p>
-                <p>Saat ini saya fokus memperdalam <span class="highlight">HTML, CSS, Flask</span>, dan berbagai teknologi pendukung lainnya. Setiap baris kode yang saya tulis adalah langkah untuk menjadi lebih baik.</p>
-            </div>
-        </section>
+<section class="section tight">
+  <div class="wrap about-strip">
+    <div class="card reveal" style="padding:0;overflow:hidden">
+      <img src="{{ url_for('static', filename=profile.foto) }}" alt="Foto {{ profile.nama }}" style="aspect-ratio:4/4.4;object-fit:cover;width:100%">
+    </div>
+    <div class="reveal">
+      <h2>Perkenalan diri</h2>
+      <p style="margin-top:16px">Saya <b>{{ profile.nama }}</b>, {{ profile.status }} di {{ profile.kampus }}. Perjalanan saya dimulai dari rasa penasaran terhadap cara kerja sebuah website, dari tombol yang diklik sampai data yang tersimpan di server.</p>
+      <p>Saat ini saya memperdalam <b>HTML, CSS, JavaScript, Python Flask, dan MySQL</b>. Setiap baris kode yang saya tulis adalah langkah untuk menjadi lebih baik. </p><p>Saya Juga tertarik pada dunia pelayanan dan mengembangkan skil service saya di dunia F&B Service</p>
+      <div class="tag-cloud" style="margin-top:8px">
+        <span class="tag">{{ icon('cap') }}Informatika</span><span class="tag">{{ icon('code') }}Web</span><span class="tag">{{ icon('db') }}MySQL</span><span class="tag">{{ icon('palette') }}Service</span>
+      </div>
+    </div>
+  </div>
+</section>
 
-        <section class="section">
-            <h3 class="section-title">Perjalanan</h3>
-            <div class="timeline">
-                <div class="timeline-item">
-                    <div class="year">2024 &mdash; Sekarang</div>
-                    <h4>Universitas</h4>
-                    <p>Mulai serius belajar pemrograman web dan ikut berbagai organisasi kampus.</p>
-                </div>
-                <div class="timeline-item">
-                    <div class="year">2025</div>
-                    <h4>Lulus SMK &amp; Kenalan dengan Coding</h4>
-                    <p>Lulus SMK, Dengan bekal lulusan Rekayasa Perangkat Lunak &mdash; dengan &lt;h1&gt; belajar HTML, CSS dan Javascript.</p>
-                </div>
-                <div class="timeline-item">
-                    <div class="year">2006</div>
-                    <h4>Lahir</h4>
-                    <p>Mulai petualangan di dunia ini.</p>
-                </div>
-            </div>
-        </section>
+<section class="section section-alt">
+  <div class="wrap about-strip">
+    <div class="reveal">
+      <span class="eyebrow">Perjalanan Pendidikan</span>
+      <h2>Dari SMK menuju Informatika</h2>
+      <p style="margin-top:16px">Garis waktu singkat perjalanan belajar saya.</p>
+    </div>
+    <div class="timeline">
+      <div class="t-item reveal"><div class="year">2025 — Sekarang</div><h3>Mahasiswa Informatika</h3><p>Menempuh pendidikan di {{ profile.kampus }}, mendalami pemrograman web dan basis data.</p></div>
+      <div class="t-item reveal"><div class="year">2025</div><h3>Lulus SMK Rekayasa Perangkat Lunak</h3><p>Berbekal jurusan RPL, mulai mengenal HTML, CSS, dan JavaScript.</p></div>
+      <div class="t-item reveal"><div class="year">2006</div><h3>Lahir</h3><p>Memulai petualangan di dunia ini.</p></div>
+    </div>
+  </div>
+</section>
 
-        <section class="section">
-            <div class="quote">
-                "Dimana ada kesempatan, Maka Ambillah."
-                <cite>&mdash; Fuad</cite>
-            </div>
-        </section>
-    </main>
+<section class="section">
+  <div class="wrap">
+    <div class="section-head"><div><span class="eyebrow">Ketertarikan &amp; Tujuan</span><h2>Arah yang ingin saya tuju</h2></div></div>
+    <div class="grid-3">
+      <div class="card reveal"><div class="icon-tile">{{ icon('target') }}</div><h3>Tujuan</h3><p>Menjadi pengembang web yang andal dan mampu membangun aplikasi yang bermanfaat bagi banyak orang.</p></div>
+      <div class="card reveal"><div class="icon-tile warm">{{ icon('monitor') }}</div><h3>Ketertarikan</h3><p>Pengembangan website, basis data, dan perancangan antarmuka yang rapi.</p></div>
+      <div class="card reveal"><div class="icon-tile">{{ icon('sparkle') }}</div><h3>Terus Belajar</h3><p>Mencoba teknologi baru lewat praktik langsung dan proyek nyata.</p></div>
+    </div>
+  </div>
+</section>
 
-    <footer>
-        &copy; 2026 Fuad
-    </footer>
-</body>
-</html>
+<section class="section section-alt">
+  <div class="wrap">
+    <div class="section-head"><div><span class="eyebrow">Nilai &amp; Prinsip</span><h2>Yang saya pegang</h2></div></div>
+    <div class="values">
+      <div class="card reveal"><div class="icon-tile">{{ icon('heart') }}</div><h3>Bermanfaat</h3><p>Teknologi seharusnya membuat hidup orang lebih mudah.</p></div>
+      <div class="card reveal"><div class="icon-tile warm">{{ icon('sparkle') }}</div><h3>Rasa ingin tahu</h3><p>Selalu bertanya “bagaimana ini bekerja?” lalu mencobanya sendiri.</p></div>
+      <div class="card reveal"><div class="icon-tile">{{ icon('check') }}</div><h3>Konsisten</h3><p>Sedikit demi sedikit, setiap hari, sampai menjadi bisa.</p></div>
+    </div>
+    <div class="quote reveal" style="margin-top:70px">“Dimana ada kesempatan, maka ambillah.”<cite>— {{ profile.nama }}</cite></div>
+  </div>
+</section>
+{% endblock %}

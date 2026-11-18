@@ -1,0 +1,5 @@
+{% extends 'admin/base.html' %}
+{% block title %}Tambah Pengalaman{% endblock %}
+{% block heading %}Tambah Pengalaman{% endblock %}
+{% block sub %}Isi data pengalaman baru.{% endblock %}
+{% block content %}{% with gambar_lama=None, tombol='Simpan Pengalaman' %}{% include 'admin/_form_pengalaman.html' %}{% endwith %}{% endblock %}

@@ -1,0 +1,7 @@
+.venv/
+__pycache__/
+*.pyc
+static/uploads/pengalaman/*
+static/uploads/sertifikat/*
+!static/uploads/pengalaman/.gitkeep
+!static/uploads/sertifikat/.gitkeep

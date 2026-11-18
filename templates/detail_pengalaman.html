@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% from '_icons.html' import icon %}
+{% block title %}{{ p.judul }}{% endblock %}
+{% block content %}
+<div class="wrap">
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="{{ url_for('projects') }}">Pengalaman</a>{{ icon('arrow') }}<span>{{ p.judul }}</span></nav>
+  <article class="detail">
+    <div>
+      <span class="badge k-{{ p.kategori }}">{{ p.kategori }}</span>
+      <h1>{{ p.judul }}</h1>
+      <div class="detail-media">
+        {% if p.gambar %}<img src="{{ url_for('static', filename='uploads/pengalaman/' ~ p.gambar) }}" alt="Dokumentasi {{ p.judul }}">{% else %}{{ icon('briefcase') }}{% endif %}
+      </div>
+      {% if galeri %}
+      <h2 class="gallery-title">Galeri Foto <span>{{ galeri|length + (1 if p.gambar else 0) }} foto</span></h2>
+      <div class="gallery">
+        {% if p.gambar %}<button type="button" class="g-thumb" data-lightbox="{{ url_for('static', filename='uploads/pengalaman/' ~ p.gambar) }}"><img src="{{ url_for('static', filename='uploads/pengalaman/' ~ p.gambar) }}" alt="Foto utama" loading="lazy"></button>{% endif %}
+        {% for g in galeri %}<button type="button" class="g-thumb" data-lightbox="{{ url_for('static', filename='uploads/pengalaman/' ~ g.gambar) }}"><img src="{{ url_for('static', filename='uploads/pengalaman/' ~ g.gambar) }}" alt="Foto dokumentasi {{ loop.index }}" loading="lazy"></button>{% endfor %}
+      </div>
+      <div class="modal" id="lightbox"><button type="button" class="modal-close" aria-label="Tutup">{{ icon('x') }}</button><img id="lightbox-img" src="" alt="" style="max-width:96vw;max-height:90vh;border-radius:14px"></div>
+      {% endif %}
+      <div class="prose">{{ p.deskripsi }}</div>
+    </div>
+    <aside class="card facts">
+      <div class="fact">{{ icon('user') }}<div><small>Posisi / Jabatan</small><b>{{ p.posisi }}</b></div></div>
+      <div class="fact">{{ icon('building') }}<div><small>Instansi / Organisasi</small><b>{{ p.instansi }}</b></div></div>
+      <div class="fact">{{ icon('calendar') }}<div><small>Periode</small><b>{{ p.tanggal_mulai|periode(p.tanggal_selesai) }}</b></div></div>
+      <div class="fact">{{ icon('tag') }}<div><small>Kategori</small><b>{{ p.kategori }}</b></div></div>
+      <a class="btn btn-ghost" style="margin-top:14px" href="{{ url_for('projects') }}">← Semua pengalaman</a>
+    </aside>
+  </article>
+</div>
+{% endblock %}

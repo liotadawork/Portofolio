@@ -1,0 +1,35 @@
+{% from '_icons.html' import icon %}
+{% if errors %}<ul class="errors">{% for e in errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+<form method="post" enctype="multipart/form-data" class="panel"><div class="panel-body">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <div class="form-grid">
+    <div class="field full"><label for="judul">Judul Pengalaman</label><input id="judul" name="judul" required maxlength="150" value="{{ f.get('judul','') }}"></div>
+    <div class="field"><label for="posisi">Posisi / Jabatan</label><input id="posisi" name="posisi" required maxlength="100" value="{{ f.get('posisi','') }}"></div>
+    <div class="field"><label for="instansi">Instansi / Perusahaan / Organisasi</label><input id="instansi" name="instansi" required maxlength="150" value="{{ f.get('instansi','') }}"></div>
+    <div class="field"><label for="kategori">Kategori</label>
+      <select id="kategori" name="kategori" required>{% for k in kategori_list %}<option value="{{ k }}" {{ 'selected' if f.get('kategori') == k }}>{{ k }}</option>{% endfor %}</select></div>
+    <div></div>
+    <div class="field"><label for="tanggal_mulai">Tanggal Mulai</label><input id="tanggal_mulai" name="tanggal_mulai" type="date" required value="{{ f.get('tanggal_mulai','') }}"></div>
+    <div class="field"><label for="tanggal_selesai">Tanggal Selesai</label><input id="tanggal_selesai" name="tanggal_selesai" type="date" value="{{ f.get('tanggal_selesai') or '' }}"><small>Kosongkan jika masih berjalan.</small></div>
+    <div class="field full"><label for="deskripsi">Deskripsi Lengkap</label><textarea id="deskripsi" name="deskripsi" required>{{ f.get('deskripsi','') }}</textarea></div>
+    <div class="field full"><label for="gambar">Gambar Utama (sampul)</label>
+      <input id="gambar" name="gambar" type="file" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" data-preview="prev">
+      <small>{{ 'Pilih file baru untuk mengganti gambar. ' if gambar_lama }}Format JPG, JPEG, PNG, atau WEBP · maksimal 2 MB.</small>
+      {% if gambar_lama %}<img class="preview" id="prev" src="{{ url_for('static', filename='uploads/pengalaman/' ~ gambar_lama) }}" alt="Gambar saat ini">
+      <label class="check"><input type="checkbox" name="hapus_gambar" value="1"> Hapus gambar saat ini</label>
+      {% else %}<img class="preview" id="prev" style="display:none" alt="Pratinjau">{% endif %}
+    </div>
+    <div class="field full"><label for="foto_tambahan">Foto Tambahan (galeri)</label>
+      <input id="foto_tambahan" name="foto_tambahan" type="file" multiple accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp">
+      <small>Bisa memilih banyak foto sekaligus (tahan Ctrl / Shift). Maksimal {{ config.MAX_FOTO_TAMBAHAN }} foto per pengalaman, masing-masing maksimal 2 MB.</small>
+      {% if extras %}
+      <div class="gallery-admin">
+        {% for e in extras %}
+        <label class="g-item"><img src="{{ url_for('static', filename='uploads/pengalaman/' ~ e.gambar) }}" alt="Foto tambahan">
+          <span class="check"><input type="checkbox" name="hapus_foto" value="{{ e.id_gambar }}"> Hapus</span></label>
+        {% endfor %}
+      </div>{% endif %}
+    </div>
+  </div>
+  <div class="form-actions"><button class="btn" type="submit">{{ icon('check') }}{{ tombol }}</button><a class="btn light" href="{{ url_for('admin_pengalaman') }}">Batal</a></div>
+</div></form>

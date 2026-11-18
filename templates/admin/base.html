@@ -1,0 +1,53 @@
+{% from '_icons.html' import icon %}
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex,nofollow">
+    <title>{% block title %}Dashboard{% endblock %} — Admin Portofolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+<body>
+<div class="layout">
+    <aside class="sidebar">
+        <div class="brand"><span class="mark">FA</span><div>Admin Panel<small>Portofolio Fuad Atoil</small></div></div>
+        {% set ep = request.endpoint or '' %}
+        <nav class="menu">
+            <a href="{{ url_for('admin_dashboard') }}" class="{{ 'active' if ep == 'admin_dashboard' }}">{{ icon('dashboard') }}Dashboard</a>
+            <a href="{{ url_for('admin_pengalaman') }}" class="{{ 'active' if 'pengalaman' in ep }}">{{ icon('briefcase') }}Kelola Pengalaman</a>
+            <a href="{{ url_for('admin_sertifikat') }}" class="{{ 'active' if 'sertifikat' in ep }}">{{ icon('award') }}Kelola Sertifikat</a>
+            <a href="{{ url_for('admin_pesan') }}" class="{{ 'active' if 'pesan' in ep }}">{{ icon('inbox') }}Pesan Masuk
+                {% if belum_dibaca %}<span class="count">{{ belum_dibaca }}</span>{% endif %}</a>
+            <a href="{{ url_for('home') }}" target="_blank" rel="noopener">{{ icon('globe') }}Lihat Website</a>
+        </nav>
+        <div class="side-foot">
+            <div class="who"><span class="avatar">{{ session.get('admin_username', 'a')[:1] }}</span><div>{{ session.get('admin_username') }}<small>Administrator</small></div></div>
+            <form class="menu" method="post" action="{{ url_for('admin_logout') }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button type="submit">{{ icon('logout') }}Logout</button>
+            </form>
+        </div>
+    </aside>
+    <div class="content">
+        <div class="topbar">
+            <div style="display:flex;gap:14px;align-items:center">
+                <button class="burger" aria-label="Menu">{{ icon('menu') }}</button>
+                <div><h1>{% block heading %}{% endblock %}</h1><p>{% block sub %}{% endblock %}</p></div>
+            </div>
+            <div>{% block topaction %}{% endblock %}</div>
+        </div>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}<div class="flash-stack">{% for cat, msg in messages %}
+            <div class="flash {{ cat }}">{{ icon('check' if cat == 'success' else 'alert') }}<span>{{ msg }}</span><button type="button" aria-label="Tutup">×</button></div>
+        {% endfor %}</div>{% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </div>
+</div>
+<script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+</body>
+</html>

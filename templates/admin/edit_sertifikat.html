@@ -1,0 +1,5 @@
+{% extends 'admin/base.html' %}
+{% block title %}Edit Sertifikat{% endblock %}
+{% block heading %}Edit Sertifikat{% endblock %}
+{% block sub %}Ubah informasi sertifikat atau ganti gambarnya.{% endblock %}
+{% block content %}{% with gambar_lama=s.gambar, tombol='Simpan Perubahan' %}{% include 'admin/_form_sertifikat.html' %}{% endwith %}{% endblock %}

@@ -1,0 +1,40 @@
+{% from '_icons.html' import icon %}
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex,nofollow">
+    <title>Login Admin — Portofolio Fuad Atoil</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+<body>
+<div class="login-page">
+    <div class="login-art">
+        <div class="brand" style="border:0;padding:0"><span class="mark">FA</span><div>Admin Panel</div></div>
+        <div><h1>Kelola portofolio Anda dengan mudah.</h1><p>Tambah pengalaman, unggah sertifikat, dan baca pesan dari pengunjung dalam satu dashboard.</p></div>
+        <small style="opacity:.6">&copy; 2026 Fuad Atoil</small>
+    </div>
+    <div class="login-form">
+        <div class="login-box">
+            <h2>Masuk</h2>
+            <p class="muted">Khusus administrator website.</p>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}<div class="flash-stack" style="margin-top:18px">{% for cat, msg in messages %}
+                <div class="flash {{ cat }}">{{ icon('check' if cat == 'success' else 'alert') }}<span>{{ msg }}</span></div>{% endfor %}</div>{% endif %}
+            {% endwith %}
+            <form method="post" action="{{ url_for('admin_login') }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <div class="field"><label for="username">Username</label><input id="username" name="username" type="text" required autofocus autocomplete="username" maxlength="50"></div>
+                <div class="field"><label for="password">Password</label><input id="password" name="password" type="password" required autocomplete="current-password"></div>
+                <button class="btn" type="submit">{{ icon('lock') }} Login</button>
+            </form>
+            <p class="muted" style="margin-top:22px"><a href="{{ url_for('home') }}" style="color:var(--brand);font-weight:600">← Kembali ke website</a></p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

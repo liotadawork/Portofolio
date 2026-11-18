@@ -1,74 +1,47 @@
-<!DOCTYPE html>
-<html lang="id" style="background-color:#0A0A0C;color-scheme:dark">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fuad — Contact</title>
-    <style>html,body{background-color:#0A0A0C}</style>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-</head>
-<body>
-    <header>
-        <a href="/" class="logo"><span>F</span>uad</a>
-        <nav>
-            <a href="/">Home</a>
-            <a href="/about">About</a>
-            <a href="/skills">Skills</a>
-            <a href="/projects">Projects</a>
-            <a href="/blog" class="active">Blog</a>
-            <a href="/contact">Contact</a>
-        </nav>
-    </header>
-
-    <main>
-        <section class="section">
-            <h3 class="section-title">Catatan</h3>
-            <div class="blog-grid stagger">
-                <div class="blog-card">
-                    <div class="date">5 Okt 2025</div>
-                    <h4>CSS Grid vs Flexbox</h4>
-                    <p>Kapan harus pake Grid, kapan harus pake Flexbox? Simpelnya: Grid buat 2 dimensi, Flexbox buat 1 dimensi.</p>
-                    <span class="tag">CSS</span>
-                </div>
-                <div class="blog-card">
-                    <div class="date">2 Okt 2025</div>
-                    <h4>Flask buat Pemula</h4>
-                    <p>Flask itu micro-framework Python buat web. Ringan, fleksibel, dan cocok buat belajar routing, template, dan static files.</p>
-                    <span class="tag">Flask</span>
-                </div>
-                <div class="blog-card">
-                    <div class="date">28 Sep 2025</div>
-                    <h4>Kenapa Dark Mode?</h4>
-                    <p>Dark mode bukan cuma soal estetika. Lebih hemat baterai di OLED, lebih nyaman di mata pas malam hari.</p>
-                    <span class="tag">UI/UX</span>
-                </div>
-                <div class="blog-card">
-                    <div class="date">20 Sep 2025</div>
-                    <h4>CSS Animation Tanpa JS</h4>
-                    <p>Dengan @keyframes, transition, dan animation-delay, kita bisa bikin animasi kompleks tanpa satupun baris JavaScript.</p>
-                    <span class="tag">CSS</span>
-                </div>
-                <div class="blog-card">
-                    <div class="date">15 Sep 2025</div>
-                    <h4>Variable CSS (Custom Properties)</h4>
-                    <p>CSS variables bikin styling jadi konsisten. Ubah satu nilai di :root, efek ke seluruh halaman.</p>
-                    <span class="tag">CSS</span>
-                </div>
-                <div class="blog-card">
-                    <div class="date">10 Sep 2025</div>
-                    <h4>Struktur Folder Flask</h4>
-                    <p>Templates/, static/, app.py &mdash; itu aja udah cukup buat project kecil. Flask otomatis nyari file di folder itu.</p>
-                    <span class="tag">Flask</span>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer>
-        &copy; 2026 Fuad
-    </footer>
-</body>
-</html>
+{% extends 'base.html' %}
+{% from '_icons.html' import icon %}
+{% block title %}Kontak{% endblock %}
+{% block content %}
+{% macro kontak(ikon, label, nilai, href, warm=false) %}
+  {% if nilai %}
+  <a class="contact-item" href="{{ href }}" {% if href.startswith('http') %}target="_blank" rel="noopener"{% endif %}><div class="icon-tile {{ 'warm' if warm }}">{{ icon(ikon) }}</div><div><small>{{ label }}</small><b>{{ nilai }}</b></div></a>
+  {% else %}
+  <div class="contact-item empty-val"><div class="icon-tile">{{ icon(ikon) }}</div><div><small>{{ label }}</small><b>Belum diisi</b></div></div>
+  {% endif %}
+{% endmacro %}
+<section class="page-hero wrap">
+  <span class="eyebrow">Kontak</span>
+  <h1>Mari terhubung</h1>
+  <p>Hubungi saya lewat kanal di bawah, atau kirim pesan langsung melalui formulir. Tidak perlu login.</p>
+</section>
+<section class="section tight">
+  <div class="wrap contact-grid">
+    <div class="card reveal">
+      <h2 style="font-size:1.6rem">Informasi Kontak</h2>
+      <div class="contact-list">
+        {{ kontak('mail', 'Email', profile.email, 'mailto: ' ~ profile.email) }}
+        {{ kontak('chat', 'WhatsApp', ('' ~ profile.whatsapp) if profile.whatsapp else 'klik', 'https://wa.me/' ~ profile.whatsapp, true) }}
+        {{ kontak('pin', 'Domisili', profile.domisili, 'DI Yogyakarta') }}
+        {{ kontak('instagram', 'Instagram', ('' ~ profile.instagram) if profile.instagram else 'fuaddddddd_', 'https://www.instagram.com/fuaddddddd_/' ~ profile.instagram, true) }}
+        {{ kontak('linkedin', 'LinkedIn', 'https://www.linkedin.com/in/fuad-atoil-978157348/' if profile.linkedin else 'Fuad Atoil', 'https://www.linkedin.com/in/fuad-atoil-978157348/' ~ profile.linkedin, true) }}
+        {{ kontak('github', 'GitHub', profile.github.rstrip('/').split('/')[-1] if profile.github else '', profile.github, true) }}
+      </div>
+    </div>
+    <div class="card form-card reveal" id="kirim-pesan">
+      <h2>Kirim Pesan</h2>
+      <p>Semua kolom wajib diisi.</p>
+      <form method="post" action="{{ url_for('contact') }}" novalidate>
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div class="hp" aria-hidden="true"><label>Website <input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+        <div class="field-row">
+          <div class="field"><label for="nama">Nama</label><input id="nama" name="nama" type="text" maxlength="100" required value="{{ form.get('nama','') }}" placeholder="Nama lengkap"></div>
+          <div class="field"><label for="email">Email</label><input id="email" name="email" type="email" maxlength="150" required value="{{ form.get('email','') }}" placeholder="nama@email.com"></div>
+        </div>
+        <div class="field"><label for="subjek">Subjek</label><input id="subjek" name="subjek" type="text" maxlength="150" required value="{{ form.get('subjek','') }}" placeholder="Topik pesan"></div>
+        <div class="field"><label for="pesan">Pesan</label><textarea id="pesan" name="pesan" maxlength="3000" required placeholder="Tulis pesan Anda di sini...">{{ form.get('pesan','') }}</textarea></div>
+        <button class="btn btn-primary" type="submit" style="margin-top:22px;width:100%">{{ icon('send') }} Kirim Pesan</button>
+      </form>
+    </div>
+  </div>
+</section>
+{% endblock %}

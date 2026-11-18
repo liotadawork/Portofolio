@@ -1,0 +1,25 @@
+{% extends 'admin/base.html' %}
+{% from '_icons.html' import icon %}
+{% block title %}Kelola Sertifikat{% endblock %}
+{% block heading %}Kelola Sertifikat{% endblock %}
+{% block sub %}Sertifikat dan pencapaian yang tampil di galeri website.{% endblock %}
+{% block topaction %}<a class="btn" href="{{ url_for('admin_tambah_sertifikat') }}">{{ icon('plus') }}Tambah Sertifikat</a>{% endblock %}
+{% block content %}
+<div class="panel">
+  {% if rows %}<div class="table-wrap"><table>
+    <thead><tr><th>Gambar</th><th>Sertifikat</th><th>Tanggal</th><th>Aksi</th></tr></thead>
+    <tbody>{% for s in rows %}
+      <tr>
+        <td>{% if s.gambar %}<img class="thumb" src="{{ url_for('static', filename='uploads/sertifikat/' ~ s.gambar) }}" alt="">{% else %}<div class="thumb">{{ icon('image') }}</div>{% endif %}</td>
+        <td><b>{{ s.nama_sertifikat }}</b><div class="muted">{{ s.penyelenggara }}</div></td>
+        <td class="muted">{{ s.tanggal|tgl_lengkap }}</td>
+        <td><div class="actions">
+          <a class="btn light sm" href="{{ url_for('admin_detail_sertifikat', id_=s.id_sertifikat) }}">{{ icon('eye') }}Lihat</a>
+          <a class="btn light sm" href="{{ url_for('admin_edit_sertifikat', id_=s.id_sertifikat) }}">{{ icon('edit') }}Edit</a>
+          <form method="post" action="{{ url_for('admin_hapus_sertifikat', id_=s.id_sertifikat) }}" data-confirm="Hapus sertifikat “{{ s.nama_sertifikat }}” beserta gambarnya?">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="btn danger sm" type="submit">{{ icon('trash') }}Hapus</button></form>
+        </div></td>
+      </tr>{% endfor %}</tbody></table></div>
+  {% else %}<div class="empty">{{ icon('award') }}<p>Belum ada sertifikat. Klik “Tambah Sertifikat”.</p></div>{% endif %}
+</div>
+{% endblock %}

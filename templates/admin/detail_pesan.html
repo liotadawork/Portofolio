@@ -1,0 +1,26 @@
+{% extends 'admin/base.html' %}
+{% from '_icons.html' import icon %}
+{% block title %}Detail Pesan{% endblock %}
+{% block heading %}{{ m.subjek }}{% endblock %}
+{% block sub %}Dari {{ m.nama }}{% endblock %}
+{% block topaction %}<a class="btn light" href="{{ url_for('admin_pesan') }}">← Kembali</a>{% endblock %}
+{% block content %}
+<div class="panel"><div class="panel-body">
+  <div class="msg-meta">
+    <div><small>Nama pengirim</small>{{ m.nama }}</div>
+    <div><small>Email</small><a href="mailto:{{ m.email }}" style="color:var(--brand)">{{ m.email }}</a></div>
+    <div><small>Diterima</small>{{ m.created_at|tgl_waktu }}</div>
+    <div><small>Status</small><span class="badge {{ 'new' if m.status == 'Belum Dibaca' else 'read' }}">{{ m.status }}</span></div>
+  </div>
+  <div class="msg-body">{{ m.isi_pesan }}</div>
+  <div class="form-actions">
+    <a class="btn" href="mailto:{{ m.email }}?subject=Re: {{ m.subjek|urlencode }}">{{ icon('mail') }}Balas via Email</a>
+    <form method="post" action="{{ url_for('admin_status_pesan', id_=m.id_pesan) }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><input type="hidden" name="kembali" value="detail">
+      <input type="hidden" name="status" value="{{ 'Belum Dibaca' if m.status == 'Sudah Dibaca' else 'Sudah Dibaca' }}">
+      <button class="btn light" type="submit">{{ 'Tandai belum dibaca' if m.status == 'Sudah Dibaca' else 'Tandai sudah dibaca' }}</button></form>
+    <form method="post" action="{{ url_for('admin_hapus_pesan', id_=m.id_pesan) }}" data-confirm="Hapus pesan ini secara permanen?">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="btn danger" type="submit">{{ icon('trash') }}Hapus</button></form>
+  </div>
+</div></div>
+{% endblock %}

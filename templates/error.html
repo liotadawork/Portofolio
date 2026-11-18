@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% from '_icons.html' import icon %}
+{% block title %}{{ judul }}{% endblock %}
+{% block content %}
+<section class="error-page wrap">
+    <div class="code">{{ kode }}</div>
+    <h1>{{ judul }}</h1>
+    <p>{{ pesan }}</p>
+    <a class="btn btn-primary" href="{{ url_for('home') }}">Kembali ke Beranda {{ icon('arrow') }}</a>
+</section>
+{% endblock %}

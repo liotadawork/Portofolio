@@ -1,0 +1,34 @@
+{% extends 'admin/base.html' %}
+{% from '_icons.html' import icon %}
+{% block title %}Pesan Masuk{% endblock %}
+{% block heading %}Pesan Masuk{% endblock %}
+{% block sub %}Pesan dari pengunjung melalui formulir kontak.{% endblock %}
+{% block topaction %}
+<div class="tabs">
+  <a class="tab {{ 'active' if not filt }}" href="{{ url_for('admin_pesan') }}">Semua</a>
+  <a class="tab {{ 'active' if filt == 'Belum Dibaca' }}" href="{{ url_for('admin_pesan', status='Belum Dibaca') }}">Belum Dibaca</a>
+  <a class="tab {{ 'active' if filt == 'Sudah Dibaca' }}" href="{{ url_for('admin_pesan', status='Sudah Dibaca') }}">Sudah Dibaca</a>
+</div>{% endblock %}
+{% block content %}
+<div class="panel">
+  {% if rows %}<div class="table-wrap"><table>
+    <thead><tr><th>Pengirim</th><th>Subjek</th><th>Tanggal</th><th>Status</th><th>Aksi</th></tr></thead>
+    <tbody>{% for m in rows %}
+      <tr class="{{ 'unread' if m.status == 'Belum Dibaca' }}">
+        <td>{% if m.status == 'Belum Dibaca' %}<span class="dot" title="Belum dibaca"></span>{% endif %}{{ m.nama }}<div class="muted" style="font-weight:400">{{ m.email }}</div></td>
+        <td><a href="{{ url_for('admin_detail_pesan', id_=m.id_pesan) }}">{{ m.subjek }}</a></td>
+        <td class="muted" style="white-space:nowrap">{{ m.created_at|tgl_waktu }}</td>
+        <td><span class="badge {{ 'new' if m.status == 'Belum Dibaca' else 'read' }}">{{ m.status }}</span></td>
+        <td><div class="actions">
+          <a class="btn light sm" href="{{ url_for('admin_detail_pesan', id_=m.id_pesan) }}">{{ icon('eye') }}Baca</a>
+          <form method="post" action="{{ url_for('admin_status_pesan', id_=m.id_pesan) }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <input type="hidden" name="status" value="{{ 'Sudah Dibaca' if m.status == 'Belum Dibaca' else 'Belum Dibaca' }}">
+            <button class="btn light sm" type="submit">{{ 'Tandai dibaca' if m.status == 'Belum Dibaca' else 'Tandai belum' }}</button></form>
+          <form method="post" action="{{ url_for('admin_hapus_pesan', id_=m.id_pesan) }}" data-confirm="Hapus pesan dari {{ m.nama }}?">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="btn danger sm icon" type="submit" aria-label="Hapus">{{ icon('trash') }}</button></form>
+        </div></td>
+      </tr>{% endfor %}</tbody></table></div>
+  {% else %}<div class="empty">{{ icon('inbox') }}<p>Tidak ada pesan.</p></div>{% endif %}
+</div>
+{% endblock %}

@@ -1,9 +1,7 @@
 # Portofolio Pribadi Fuad Atoil — Flask + MySQL
 
 ## Akun admin awal
-- URL login : http://127.0.0.1:5000/admin/login
-- Username  : `admin`
-- Password  : `Fuad@2026!`  (tersimpan sebagai hash di database; segera ganti setelah dipakai)
+
 
 ## 1. Menyalakan MySQL di XAMPP
 1. Buka **XAMPP Control Panel** → klik **Start** pada **MySQL** (Apache boleh ikut dinyalakan untuk phpMyAdmin).

@@ -1,5 +1,5 @@
 # Portofolio Pribadi Fuad Atoil — Flask + MySQL
-![alt text](1_beranda_hero.jpg?raw=true)
+![image alt](1_beranda_hero.jpg?raw=true)
 ## Akun admin awal
 
 
